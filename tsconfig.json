@@ -1,0 +1,54 @@
+{
+  "display": "Node 20",
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "rootDir": "src",
+    "outDir": "lib",
+    "module": "commonjs",
+    "baseUrl": ".",
+    "target": "ESNext",
+    "types": ["node"],
+    "moduleResolution": "node",
+    "declaration": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noLib": false,
+    "useUnknownInCatchVariables": false,
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": false,
+    "strictPropertyInitialization": false,
+    "emitDeclarationOnly": false,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "jsx": "preserve",
+  },
+  "files": ["src/index.ts"],
+  "include": [
+    "src/**/*.ts", 
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules", 
+    "lib", 
+    "test/**/*", 
+    "**/*.spec.ts"
+  ]
+}
