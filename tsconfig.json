@@ -40,10 +40,8 @@
     ],
     "jsx": "preserve",
   },
-  "files": ["src/index.ts"],
   "include": [
-    "src/**/*.ts", 
-    "src/**/*.tsx"
+    "src", 
   ],
   "exclude": [
     "node_modules", 
