@@ -37,14 +37,14 @@ export function Node(node: TNode, key?: TKey): JSX.Element {
 /**
  * Render Markdown Component
  */
-export function Markdown({ document, className, classNames = {} }: {
+export function Markdown({ document, className }: {
   document: TNode;
   className?: string;
   classNames?: Record<string, string>;
 }): JSX.Element {
   return (
     <div className={className || 'contents'}>
-      {Children(document, classNames)}
+      {Children(document)}
     </div>
   );
 }
