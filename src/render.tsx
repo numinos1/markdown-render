@@ -2,8 +2,8 @@ import { createElement, JSX } from 'react';
 import Image from 'next/image';
 
 const NODE_MAP = {
-  root: MarkdownNode,
   paragraph: ParagraphNode,
+  section: SectionNode,
   heading: HeadingNode,
   text: TextNode,
   media: MediaNode,
@@ -13,7 +13,7 @@ const NODE_MAP = {
   missing: MissingNode,
   list: ListNode,
   listItem: ListItemNode,
-  blockQuote: BlockQuoteNode
+  blockquote: BlockquoteNode
 };
 
 export interface TNode {
@@ -34,42 +34,79 @@ export function Node(node: TNode, key?: TKey): JSX.Element {
   return (NODE_MAP[node.type] || MissingNode)(node, key);
 }
 
-export default function MarkdownNode(node: TNode): JSX.Element {
+/**
+ * Render Markdown Component
+ */
+export function Markdown({ document, className, classNames = {} }: {
+  document: TNode;
+  className?: string;
+  classNames?: Record<string, string>;
+}): JSX.Element {
   return (
-    <div className="contents">
-      {Children(node)}
+    <div className={className || 'contents'}>
+      {Children(document, classNames)}
     </div>
   );
 }
 
+/**
+ * List
+ */
 export function ListNode(node: TNode, key?: TKey): JSX.Element {
   return (node.ordered)
     ? (<ol key={key}>{Children(node)}</ol>)
     : (<ul key={key}>{Children(node)}</ul>);
 }
-
+ 
+/**
+ * ListItem
+ */
 export function ListItemNode(node: TNode, key?: TKey): JSX.Element {
   return (
     <li key={key}>{Children(node)}</li>
   );
 }
 
+/**
+ * Paragraph
+ */
 export function ParagraphNode(node: TNode, key?: TKey): JSX.Element {
-  return (<p key={key}>{Children(node)}</p>);
+  return (<p key={key}>{node.value}</p>); //{Children(node)}</p>);
 }
 
-export function HeadingNode(node: TNode, key?: TKey): JSX.Element {
-  return createElement(
-    `h${(node.depth || 0) + 1}`, 
-    { key }, 
-    Children(node)
+/**
+ * Section
+ */
+export function SectionNode(node: TNode, key?: TKey): JSX.Element {
+  return (
+    <div className="section">
+      {node.title ? HeadingNode(node, key) : null}
+      {Children(node)}
+    </div>
   );
 }
 
+/**
+ * Heading
+ */
+export function HeadingNode(node: TNode, key?: TKey): JSX.Element {
+  return createElement(
+    `h${(node.depth || 0) + 1}`, 
+    { key: 'heading' }, 
+    node.title
+  );
+}
+
+/**
+ * Text
+ */
 export function TextNode(node: TNode, key?: TKey): JSX.Element {
   return (<span>{node.value || ''}</span>);
 }
 
+/**
+ * Media
+ */
 export function MediaNode(node: TNode, key?: TKey): JSX.Element {
   const images = node.children;
   const style = (images.length === 1)
@@ -83,6 +120,9 @@ export function MediaNode(node: TNode, key?: TKey): JSX.Element {
   );
 }
 
+/**
+ * Image
+ */
 export function ImageNode(node: TNode, key?: TKey): JSX.Element {
   const title = node.title || node.alt || '';
 
@@ -99,12 +139,18 @@ export function ImageNode(node: TNode, key?: TKey): JSX.Element {
   );
 }
 
+/**
+ * Link
+ */
 function LinkNode(node: TNode, key?: TKey): JSX.Element {
   return (
     <a key={key} href={node.url}>{Children(node)}</a>
   );
 }
 
+/**
+ * Strong
+ */
 function StrongNode(node: TNode, key?: TKey): JSX.Element {
   return (
     <span key={key} style={{ fontWeight: 'bold' }}>
@@ -113,14 +159,20 @@ function StrongNode(node: TNode, key?: TKey): JSX.Element {
   );
 }
 
-function BlockQuoteNode(node: TNode, key?: TKey): JSX.Element {
+/**
+ * Blockquote
+ */
+function BlockquoteNode(node: TNode, key?: TKey): JSX.Element {
   return (
-    <div key={key} className="blockquote">
-      {node.value}
-    </div>
+    <blockquote key={key}>
+      <p>{node.value}</p>
+    </blockquote>
   );
 }
 
+/**
+ * Missing
+ */
 function MissingNode(node: TNode, key?: TKey): JSX.Element {
   return (
     <div key={key} className="missing">
