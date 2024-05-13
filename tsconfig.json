@@ -3,7 +3,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "bundler",
-    "target": "es2015",
+    "target": "ES6",
     "baseUrl": ".",
     "outDir": "lib",
     "allowJs": true,
